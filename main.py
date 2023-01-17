@@ -53,18 +53,21 @@ def debug_info():
 
 
 while run_game:
-    time.sleep(0.05)
+    time.sleep(0.1)
     paddle_left.move()
     paddle_right.move()
     ball.move()
     screen.update()
-    # compute any changes after movement happened
 
-    # wall ricochet
-    # if ball.wall_hit():
-    #     ball.ricochet()
+    # compute if any events occurred after movement happened
     debug_info()
-    if ~ball.hit_last and (ball.distance(paddle_left) < 22 or ball.distance(paddle_right) < 18):
+    # tweak the paddle y positions to the middle of the paddle as the turtle position is the bottom left corner
+    paddle_left_pos = list(paddle_left.position())
+    paddle_left_pos[1] += 10
+    paddle_right_pos = list(paddle_right.position())
+    paddle_right_pos[1] += 10
+    if not ball.hit_last \
+            and (ball.distance(tuple(paddle_left_pos)) < 22 or ball.distance(tuple(paddle_right_pos)) < 18):
         ball.paddle_hit()
     elif not(ball.min_y < ball.ycor() < ball.max_y):
         ball.wall_ricochet()

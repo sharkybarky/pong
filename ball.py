@@ -27,7 +27,7 @@ class Ball(Turtle):
         self.goto_serve()
 
     def goto_serve(self):
-        rand_angle = random.randint(-60, 60)
+        rand_angle = random.randint(-70, 70)
         if self.move_state == "serve_l":
             self.goto((self.min_x + 37), 17)
             self.setheading(360 + rand_angle)

@@ -9,7 +9,7 @@ UP = 90
 class Paddle(Turtle):
     def __init__(self, left_or_right):
         super().__init__()
-        self.direction = 0
+        self.direction_multiplier = 0
         self.screen.register_shape("paddle", ((0, 0), (0, 40), (5, 40), (5, 0)))
         # starting position
         self.shape("paddle")
@@ -24,14 +24,15 @@ class Paddle(Turtle):
         self.setheading(90)
 
     def set_direction_up(self):
-        self.direction = 1
+        self.direction_multiplier = 1
 
     def set_direction_down(self):
-        self.direction = -1
+        self.direction_multiplier = -1
 
     def move(self):
-        if self.direction is not 0:
-            self.forward(10 * self.direction)
+        if self.direction_multiplier is not 0:
+            self.forward(10 * self.direction_multiplier)
 
+        # stop when out of bounds
         if not(-282 < self.ycor() < 260):
-            self.direction = 0
+            self.direction_multiplier = 0
