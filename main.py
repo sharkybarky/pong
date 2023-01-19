@@ -26,8 +26,8 @@ screen.bgcolor("black")
 paddle_left = Paddle(-280, 0)
 paddle_right = Paddle(265, 0)
 
-scoreboard_left = Scoreboard((-30, 270))
-scoreboard_right = Scoreboard((30, 270))
+scoreboard_left = Scoreboard((-30, 265))
+scoreboard_right = Scoreboard((30, 265))
 
 # set tracer to 0 here only once field and paddles have all been drawn smoothly
 screen.tracer(0)
@@ -56,8 +56,6 @@ def debug_info():
 
 while run_game:
     time.sleep(0.03)
-    # paddle_left.move()
-    # paddle_right.move()
     ball.move()
     screen.update()
 
@@ -68,10 +66,17 @@ while run_game:
     if ball.in_play() and \
             (paddle_left.hit(ball.xcor() - 20, ball.ycor()) or paddle_right.hit(ball.xcor() + 20, ball.ycor())):
         ball.paddle_hit()
+        print("HIT!!!!!!!")
     elif not(ball.min_y < ball.ycor() < ball.max_y):
         ball.wall_ricochet()
     elif not(ball.min_x < ball.xcor() < ball.max_x):
         ball.out()
+        if ball.min_x > ball.xcor():
+            scoreboard_right.update()
+        else:
+            scoreboard_left.update()
+        ball.goto_serve()
+
 
 scoreboard_left.game_ended()
 screen.update()

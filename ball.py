@@ -13,24 +13,25 @@ class Ball(Turtle):
     def __init__(self, min_x, min_y, max_x, max_y):
         super().__init__()
         # left paddle starts with ball
-        self.move_state = random.choice(["serve_from_r"])
-        self.shape("circle")
-        self.turtlesize(2)
         self.min_x = min_x + 5
         self.min_y = min_y + 5
         self.max_x = max_x - 5
         self.max_y = max_y - 5
         self.min_in_play_x = self.min_x
         self.max_in_play_x = self.max_x
+        self.shape("circle")
+        self.turtlesize(2)
         self.color("blue")
         self.fillcolor("blue")
         self.penup()
-        self.hit_last = False
         self.x_move = 0
         self.y_move = 0
+        self.move_state = "out"
         self.goto_serve()
 
     def goto_serve(self):
+        self.clear()
+        self.move_state = random.choice(["serve_from_r", "serve_from_l"])
         if self.move_state == "serve_from_l":
             self.goto(self.min_in_play_x + 40, 17)
             self.x_move = 3
@@ -51,7 +52,6 @@ class Ball(Turtle):
         self.x_move *= -1.4
         # hits reduce y component to make ball move more directly
         self.y_move *= 0.7
-        self.hit_last = True
 
     def wall_ricochet(self):
         # wall hit reduces x velocity
@@ -61,6 +61,8 @@ class Ball(Turtle):
 
     def out(self):
         self.move_state = "out"
+        self.x_move = 0
+        self.y_move = 0
 
     def in_play(self):
         return self.min_in_play_x < self.xcor() < self.max_in_play_x

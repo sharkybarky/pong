@@ -17,10 +17,10 @@ class Paddle(Turtle):
         # starting position
         self.penup()
         self.goto(start_x_cord, start_y_cord)
-        self.debug_turtle = Turtle()
-        self.debug_turtle.shape("classic")
-        self.debug_turtle.pencolor("red")
-        self.debug_turtle.penup()
+        # self.debug_turtle = Turtle()
+        # self.debug_turtle.shape("classic")
+        # self.debug_turtle.pencolor("red")
+        # self.debug_turtle.penup()
 
     def move_up(self):
         new_x_pos = self.xcor()
@@ -65,7 +65,6 @@ class Paddle(Turtle):
         # represent either left or right paddle so the logic has to be sufficiently generic, even when in practice
         # the Turtle pos() co-ordinates of the left and right bat in relation to its drawn shape are marginally
         # different
-
         if (abs(paddle_face["x_top"]) < abs(x_coord)) and \
                 (paddle_face["y_bottom"] < y_coord < paddle_face["y_top"]):
             self.fillcolor("white")
