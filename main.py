@@ -23,8 +23,8 @@ screen = Screen()
 screen.setup(WIDTH_PIXELS, HEIGHT_PIXELS)
 screen.bgcolor("black")
 
-paddle_left = Paddle("l")
-paddle_right = Paddle("r")
+paddle_left = Paddle(-280, 0)
+paddle_right = Paddle(265, 0)
 
 scoreboard_left = Scoreboard((-30, 270))
 scoreboard_right = Scoreboard((30, 270))
@@ -36,38 +36,37 @@ field = Field(MIN_X, MIN_Y, MAX_X, MAX_Y)
 ball = Ball(MIN_X, MIN_Y, MAX_X, MAX_Y)
 
 screen.listen()
-screen.onkeypress(fun=paddle_right.set_direction_up, key="Up")
-screen.onkeypress(fun=paddle_right.set_direction_down, key="Down")
-screen.onkeypress(fun=paddle_left.set_direction_up, key="w")
-screen.onkeypress(fun=paddle_left.set_direction_down, key="s")
+screen.onkeypress(fun=paddle_right.move_up, key="Up")
+screen.onkeypress(fun=paddle_right.move_down, key="Down")
+screen.onkeypress(fun=paddle_left.move_up, key="w")
+screen.onkeypress(fun=paddle_left.move_down, key="s")
 screen.onkeypress(fun=end_game, key="Escape")
 run_game = True
 
 
 def debug_info():
+    print(f"{ball.in_play()=}")
     print(f"{paddle_left.position()=}")
     print(f"{paddle_right.position()=}")
+    print(f"{ball.position()=}")
+    print(f"{ball.heading()=}")
     print(f"{ball.distance(paddle_left.position())=}")
     print(f"{ball.distance(paddle_right.position())=}")
-    print(f"{paddle_left.distance(paddle_right.position())=}")
 
 
 while run_game:
-    time.sleep(0.1)
-    paddle_left.move()
-    paddle_right.move()
+    time.sleep(0.03)
+    # paddle_left.move()
+    # paddle_right.move()
     ball.move()
     screen.update()
 
     # compute if any events occurred after movement happened
     debug_info()
     # tweak the paddle y positions to the middle of the paddle as the turtle position is the bottom left corner
-    paddle_left_pos = list(paddle_left.position())
-    paddle_left_pos[1] += 10
-    paddle_right_pos = list(paddle_right.position())
-    paddle_right_pos[1] += 10
-    if not ball.hit_last \
-            and (ball.distance(tuple(paddle_left_pos)) < 22 or ball.distance(tuple(paddle_right_pos)) < 18):
+    # if ball.in_play() and (ball.distance(paddle_left) < 21 or ball.distance(paddle_right) < 18):
+    if ball.in_play() and \
+            (paddle_left.hit(ball.xcor() - 20, ball.ycor()) or paddle_right.hit(ball.xcor() + 20, ball.ycor())):
         ball.paddle_hit()
     elif not(ball.min_y < ball.ycor() < ball.max_y):
         ball.wall_ricochet()
