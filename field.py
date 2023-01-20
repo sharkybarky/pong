@@ -6,6 +6,7 @@ class Field(Turtle):
         super().__init__()
         self.penup()
         self.speed(0)
+        # draw centre line
         self.goto((min_x + max_x) / 2, max_y)
         self.pendown()
         self.pencolor("white")

@@ -49,23 +49,18 @@ class Paddle(Turtle):
             self.direction_multiplier = 0
 
     def hit(self, x_coord, y_coord):
-        # return true if any of the incoming co-ords are within boundary of the paddle face
-        # determine if left or right paddle, as face position vs object pos differs slightly due to width of bat
-        # and how Turtle draws it
+        # determine if left or right paddle, as face position differs by width of bat and whether
+        # bat is in left or right position
         if self.xcor() > 0:
             x_adj = -10
         else:
             x_adj = 10
 
-        paddle_face = {"x_top": self.xcor() + x_adj,
+        paddle_face = {"x_line": self.xcor() + x_adj,
                        "y_top": self.ycor() + 50,
-                       "x_bottom": self.xcor() + x_adj,
                        "y_bottom": self.ycor() - 50}
-        # create a polygon for the bat to ensure the ball falls inside at some point. remember this object could
-        # represent either left or right paddle so the logic has to be sufficiently generic, even when in practice
-        # the Turtle pos() co-ordinates of the left and right bat in relation to its drawn shape are marginally
-        # different
-        if (abs(paddle_face["x_top"]) < abs(x_coord)) and \
+        # return true if any of the incoming co-ords are deemed to have gone past the paddles face
+        if (abs(paddle_face["x_line"]) < abs(x_coord)) and \
                 (paddle_face["y_bottom"] < y_coord < paddle_face["y_top"]):
             self.fillcolor("white")
             return True
